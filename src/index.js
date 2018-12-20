@@ -19,6 +19,7 @@ $('#newGame').click(function (e) {
     disp = new Maze(20, 20, totalGifts);
     disp[19][19][1] = 1;
     currentPosition = { x: 0, y: 0 };
+		foundGifts = 0;
     drawMaze();
 		updateGiftCount();
 });
