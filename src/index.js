@@ -9,6 +9,8 @@ let allowedKeys = [37, 38, 39, 40];
 
 let disp;
 let currentPosition;
+let currentSantaPosition;
+let currentBadSantaPosition;
 let totalGifts;
 let foundGifts;
 let countdown;
@@ -25,6 +27,14 @@ function newGame() {
     currentPosition = {
         x: 0,
         y: 0
+    };
+    currentSantaPosition = {
+        x: 19,
+        y: 19
+    };
+    currentBadSantaPosition = {
+        x: 10,
+        y: 10
     };
     foundGifts = 0;
     countdown = maxCountDown;
@@ -84,10 +94,11 @@ $(document).keydown(function(e) {
 });
 
 function autocollectLastGift() {
-    let line = disp[disp.length - 1];
-    if (line[line.length - 1][4] ==  1) {
+    let line = disp[currentSantaPosition.y];
+    if (line[currentSantaPosition.x][4] ==  1) {
         foundGifts++;
-        line[line.length - 1][4] = 0;
+        line[currentSantaPosition.x][4] = 0;
+        updateGiftCount();
     }
 }
 
@@ -103,6 +114,41 @@ function winGame() {
     }
     alert(winningText);
     newGame();
+}
+
+function randomMove(x,y) {
+    switch (Math.floor(Math.random() * 5)) {
+        case 0: // left
+            if (disp[y][x][3] !== 0) {
+                x--;
+            }
+            break;
+        case 1: // up
+            if (disp[y][x][0] !== 0) {
+                y--;
+            }
+            break;
+        case 2: // right
+            if (disp[y][x][1] !== 0) {
+                x++;
+            }
+            break;
+        case 3: // down
+            if (disp[y][x][2] !== 0) {
+                y++;
+            }
+            break;
+        default:
+            // No move
+            break;
+    }
+    return {x: x, y: y};
+}
+
+function santaMove() {
+    currentSantaPosition = randomMove(currentSantaPosition.x, currentSantaPosition.y);
+    autocollectLastGift();
+    drawMaze();
 }
 
 function drawMaze() {
@@ -143,8 +189,8 @@ function drawMaze() {
 
     $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='oleg' src='./img/oleg.png' />");
 
-    if (currentPosition.x != disp[0].length - 1 || currentPosition.y != disp.length - 1) {
-        $('#' + (disp.length - 1) + '-' + (disp[0].length - 1)).append("<img id='santa' src='./img/download.png' />");
+    if (currentPosition.x != currentSantaPosition.x || currentPosition.y != currentSantaPosition.y) {
+        $('#' + currentSantaPosition.y + '-' + currentSantaPosition.x).append("<img id='santa' src='./img/download.png' />");
     } else {
         winGame();
     }
@@ -171,5 +217,6 @@ function start() {
             $("#cryingChild img:last").delay(3000).fadeTo(500, 0.6)
         }
         $("#countdown").text(countdown);
+        santaMove();
     }, 1000);
 }
