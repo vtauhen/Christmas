@@ -122,6 +122,9 @@ function drawMaze() {
         $('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
         disp[currentPosition.y][currentPosition.x][4] = 0;
         foundGifts++;
+        $("#cryingChild img:first").fadeOut(500, function() {
+            $(this).remove();
+        });
         updateGiftCount();
     }
 
