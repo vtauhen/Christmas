@@ -40,6 +40,16 @@ code {
   height: 30px;
 }
 
+#oleg {
+  width: 30px;
+  height: 30px;
+}
+
+.hint {
+	font-style: italic;
+	color: #AAAAAA;
+}
+
 .symbol {
 	display: none;
 }

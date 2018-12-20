@@ -13,15 +13,19 @@ disp[19][19][1] = 1;
 drawMaze();
 updateGiftCount();
 
+function newGame() {
+	  disp = new Maze(20, 20, totalGifts);
+	  disp[19][19][1] = 1;
+	  currentPosition = { x: 0, y: 0 };
+		foundGifts = 0;
+	  drawMaze();
+		updateGiftCount();
+}
+
 $('#newGame').click(function (e) {
     e.preventDefault();
 
-    disp = new Maze(20, 20, totalGifts);
-    disp[19][19][1] = 1;
-    currentPosition = { x: 0, y: 0 };
-		foundGifts = 0;
-    drawMaze();
-		updateGiftCount();
+		newGame();
 });
 
 $(document).keydown(function (e) {
@@ -63,6 +67,10 @@ function updateGiftCount() {
 	$('#total-gifts').text(totalGifts);
 }
 
+function winGame() {
+	alert("You won!")
+}
+
 function drawMaze() {
     $('#maze > tbody').empty();
     for (var i = 0; i < disp.length; i++) {
@@ -78,11 +86,19 @@ function drawMaze() {
         }
         $('#maze > tbody').append("</tr>");
     }
-	if (disp[currentPosition.y][currentPosition.x][4] == 1) {
-		$('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
-		disp[currentPosition.y][currentPosition.x][4] = 0;
-		foundGifts++;
-		updateGiftCount();
-	}
-    $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='santa' src='./img/download.png' />");
+		
+		if (disp[currentPosition.y][currentPosition.x][4] == 1) {
+				$('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
+				disp[currentPosition.y][currentPosition.x][4] = 0;
+				foundGifts++;
+				updateGiftCount();
+		}
+		
+	  $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='oleg' src='./img/oleg.png' />");
+		
+		if (currentPosition.x != disp[0].length - 1 ||  currentPosition.y != disp.length - 1) {
+				$('#' + (disp.length - 1) + '-' + (disp[0].length - 1)).append("<img id='santa' src='./img/download.png' />");
+		} else {
+				winGame();
+		}
 };
