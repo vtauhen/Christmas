@@ -40,6 +40,20 @@ code {
   height: 30px;
 }
 
+.symbol {
+	display: none;
+}
+
+.gift {
+	width: 30px;
+	height: 30px;
+}
+
+.gift-counter {
+  padding: 20px;
+	text-align: center;
+}
+
 h1 { 
   font-family: MerryChristmasFlake;
   font-size: 56px;

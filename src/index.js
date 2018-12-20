@@ -5,18 +5,22 @@ import "./index.css";
 
 let currentPosition = { x: 0, y: 0 };
 let allowedKeys = [37, 38, 39, 40];
-let disp = new Maze(20, 20);
+let totalGifts = 40;
+let foundGifts = 0;
+let disp = new Maze(20, 20, totalGifts);
 disp[19][19][1] = 1;
 
 drawMaze();
+updateGiftCount();
 
 $('#newGame').click(function (e) {
     e.preventDefault();
 
-    disp = new Maze(20, 20);
+    disp = new Maze(20, 20, totalGifts);
     disp[19][19][1] = 1;
     currentPosition = { x: 0, y: 0 };
     drawMaze();
+		updateGiftCount();
 });
 
 $(document).keydown(function (e) {
@@ -53,6 +57,10 @@ $(document).keydown(function (e) {
     drawMaze();
 });
 
+function updateGiftCount() {
+	$('#found-gifts').text(foundGifts);
+	$('#total-gifts').text(totalGifts);
+}
 
 function drawMaze() {
     $('#maze > tbody').empty();
@@ -65,8 +73,15 @@ function drawMaze() {
             if (disp[i][j][1] == 0) { $('#' + selector).css('border-right', '2px solid black'); }
             if (disp[i][j][2] == 0) { $('#' + selector).css('border-bottom', '2px solid black'); }
             if (disp[i][j][3] == 0) { $('#' + selector).css('border-left', '2px solid black'); }
+            if (disp[i][j][4] == 1) { $('#' + selector).append("<svg class='gift'><use xlink:href='#gift' /></svg>"); }
         }
         $('#maze > tbody').append("</tr>");
     }
+	if (disp[currentPosition.y][currentPosition.x][4] == 1) {
+		$('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
+		disp[currentPosition.y][currentPosition.x][4] = 0;
+		foundGifts++;
+		updateGiftCount();
+	}
     $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='santa' src='./img/download.png' />");
 };

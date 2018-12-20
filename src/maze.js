@@ -1,4 +1,4 @@
-export default function (x, y) {
+export default function (x, y, giftsCount) {
 
     // Establish variables and starting grid
     var totalCells = x * y;
@@ -8,16 +8,27 @@ export default function (x, y) {
         cells[i] = new Array();
         unvis[i] = new Array();
         for (var j = 0; j < x; j++) {
-            cells[i][j] = [0, 0, 0, 0];
+            cells[i][j] = [0, 0, 0, 0, 0];
             unvis[i][j] = true;
         }
     }
+		
+		function shuffle(a) {
+		    for (let i = a.length - 1; i > 0; i--) {
+		        const j = Math.floor(Math.random() * (i + 1));
+		        [a[i], a[j]] = [a[j], a[i]];
+		    }
+		    return a;
+		}
 
     // Set a random position to start from
     var currentCell = [Math.floor(Math.random() * y), Math.floor(Math.random() * x)];
     var path = [currentCell];
     unvis[currentCell[0]][currentCell[1]] = false;
     var visited = 1;
+		
+		// Pregenerate gift distribution
+		var giftCells = shuffle(Array(giftsCount).fill(1).concat(Array(totalCells - giftsCount).fill(0)));
 
     // Loop through all available cell positions
     while (visited < totalCells) {
@@ -41,6 +52,11 @@ export default function (x, y) {
             // Remove the wall between the current cell and the chosen neighboring cell
             cells[currentCell[0]][currentCell[1]][next[2]] = 1;
             cells[next[0]][next[1]][next[3]] = 1;
+						
+						// Check if we will be pushing a gift there
+						if (giftCells[visited] == 1) {
+							cells[currentCell[0]][currentCell[1]][4] = 1;
+						}
 
             // Mark the neighbor as visited, and set it as the current cell
             unvis[next[0]][next[1]] = false;
