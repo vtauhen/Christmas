@@ -1,12 +1,23 @@
 import $ from 'jquery';
 import Maze from './maze';
 
+import "./index.css";
+
 let currentPosition = { x: 0, y: 0 };
 let allowedKeys = [37, 38, 39, 40];
 let disp = new Maze(20, 20);
 disp[19][19][1] = 1;
 
 drawMaze();
+
+$('#newGame').click(function (e) {
+    e.preventDefault();
+
+    disp = new Maze(20, 20);
+    disp[19][19][1] = 1;
+    currentPosition = { x: 0, y: 0 };
+    drawMaze();
+});
 
 $(document).keydown(function (e) {
     if (allowedKeys.indexOf(e.which) == -1) {
@@ -57,5 +68,5 @@ function drawMaze() {
         }
         $('#maze > tbody').append("</tr>");
     }
-    $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='oleg' src='./img/oleg.png' />");
+    $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='santa' src='./img/download.png' />");
 };
