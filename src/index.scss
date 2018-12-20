@@ -1,3 +1,6 @@
+@import "./styles/tree";
+@import "./styles/snow";
+
 body {
   margin: 0;
   padding: 0;
@@ -25,15 +28,19 @@ code {
 .container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  > div {
+    margin: 0 20px;
+  }
 }
 
 .intro {
   width: 400px;
-  margin: 0 auto;
 }
 
 #maze {
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 #maze td {
@@ -115,7 +122,7 @@ h2 {
   inset 0 0 6px #a23227, /* inner glow */
   inset 0 80px 80px -40px #ac3223, /* gradient */
   1px 1px 3px rgba(0,0,0,0.75); /* shadow */
-    
+
   position: relative;
   overflow: visible; /* IE9 & 10 */
   -webkit-transition: 500ms linear;
@@ -155,7 +162,7 @@ h2 {
   inset 0 0 6px #da3b2c, /* inner glow */
   inset 0 80px 80px -40px #dd4330, /* gradient */
   0px 1px 0px rgba(255,255,255,0.25); /* shadow */
-    
+
   -webkit-transition: 50ms linear;
   -moz-transition: 50ms linear;
   -o-transition: 50ms linear;
@@ -187,4 +194,3 @@ h2 {
   font-family: WavingChristmas;
   font-size: 24px;
 }
-
