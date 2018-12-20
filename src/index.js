@@ -30,9 +30,8 @@ function newGame() {
     countdown = maxCountDown;
     drawMaze();
     updateGiftCount();
-
-    drawMaze();
-    updateGiftCount();
+    
+    reset();
     start();
 }
 
@@ -140,17 +139,19 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
+function reset() {
+    $('#cryingChild').empty();
+    clearInterval(timer);
+}
+
 function start() {
     isStarted = true;
-    $('#cryingChild').empty();
     timer = setInterval(function() {
         countdown--;
-        if (countdown == 0) {
-            isStarted = false;
-            clearInterval(timer);
+        if (countdown % 5 == 0) {
             let img = getRandomInt(1, 6);
             $('#cryingChild').append(`<img id='santa' src='./img/${img}.gif' />`);
-            $("#cryingChild").fadeTo(500, 0.2)
+            $("#cryingChild img:last").delay(3000).fadeTo(500, 0.6)
         }
         $("#countdown").text(countdown);
     }, 1000);
