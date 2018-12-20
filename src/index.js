@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Maze from './maze';
 
-import "./index.css";
+import "./index.scss";
 
 const maxCountDown = 5;
 let allowedKeys = [37, 38, 39, 40];
