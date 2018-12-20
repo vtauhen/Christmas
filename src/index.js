@@ -160,7 +160,7 @@ function start() {
     isStarted = true;
     timer = setInterval(function() {
         countdown--;
-        if (countdown <= 0 && countdown % childrenInterval == 0) {
+        if (countdown <= 0 && $("#cryingChild img").length < (totalGifts - foundGifts) && countdown % childrenInterval == 0) {
             let img = getRandomInt(1, 6);
             $('#cryingChild').append(`<img class='child' src='./img/${img}.gif' />`);
             $("#cryingChild img:last").delay(3000).fadeTo(500, 0.6)
