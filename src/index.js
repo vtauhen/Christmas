@@ -162,7 +162,7 @@ function start() {
         countdown--;
         if (countdown <= 0 && $("#cryingChild img").length < (totalGifts - foundGifts) && countdown % childrenInterval == 0) {
             let img = getRandomInt(1, 6);
-            $('#cryingChild').append(`<img class='child' src='./img/${img}.gif' />`);
+            $('#cryingChild').append(`<img class='child' src='./img/${img}.gif' style='left: ` + Math.random() * 100 + `%; top: ` + Math.random() * 100 + `%' />`);
             $("#cryingChild img:last").delay(3000).fadeTo(500, 0.6)
         }
         $("#countdown").text(countdown);
