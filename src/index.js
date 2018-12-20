@@ -13,6 +13,8 @@ let currentSantaPosition;
 let currentBadSantaPosition;
 let totalGifts;
 let foundGifts;
+let autoSantaGifts;
+let badSantaGifts;
 let countdown;
 let timer;
 let isStarted = false;
@@ -21,6 +23,8 @@ let records = [];
 function newGame() {
     totalGifts = 40;
     foundGifts = 0;
+    autoSantaGifts = 0;
+    badSantaGifts = 0;
 
     disp = new Maze(20, 20, totalGifts);
     currentPosition = {
@@ -33,11 +37,12 @@ function newGame() {
     };
     currentBadSantaPosition = {
         x: 10,
-        y: 10
+        y: 10,
+        orient: 0
     };
     foundGifts = 0;
     countdown = maxCountDown;
-    autocollectLastGift();
+    autocollectGifts();
 
     if (timer) {
         clearInterval(timer);
@@ -105,11 +110,15 @@ $(document).keydown(function (e) {
     drawMaze();
 });
 
-function autocollectLastGift() {
-    let line = disp[currentSantaPosition.y];
-    if (line[currentSantaPosition.x][4] ==  1) {
-        foundGifts++;
-        line[currentSantaPosition.x][4] = 0;
+function autocollectGifts() {
+    if (disp[currentSantaPosition.y][currentSantaPosition.x][4] ==  1) {
+        autoSantaGifts++;
+        disp[currentSantaPosition.y][currentSantaPosition.x][4] = 0;
+        updateGiftCount();
+    }
+    if (disp[currentBadSantaPosition.y][currentBadSantaPosition.x][4] ==  1) {
+        badSantaGifts++;
+        disp[currentBadSantaPosition.y][currentBadSantaPosition.x][4] = 0;
         updateGiftCount();
     }
 }
@@ -117,12 +126,23 @@ function autocollectLastGift() {
 function updateGiftCount() {
     $('#found-gifts').text(foundGifts);
     $('#total-gifts').text(totalGifts);
+    if (autoSantaGifts != 0) {
+        $('#autosanta').show();
+        $('#autosanta-gifts').text(autoSantaGifts);
+    } else {
+        $('#autosanta').hide();
+    }
 }
 
 function winGame(result) {
+    foundGifts += autoSantaGifts;
+    autoSantaGifts = 0;
+    updateGiftCount();
     let winningText = "You won!";
     if (totalGifts != foundGifts) {
         winningText += "\nBut kids are still crying…";
+    } else {
+        $('#cryingChild').empty();
     }
     alert(winningText);
     records.push(result);
@@ -138,6 +158,11 @@ function winGame(result) {
     records.map(r => {
         $(".records").append(`<div><span class="record">Time:${r.time}, Gifts:${r.gift}</span></div>`);
     });
+    newGame();
+}
+
+function loseGame() {
+    alert("Oh no!.. Bad santa got you!");
     newGame();
 }
 
@@ -170,9 +195,39 @@ function randomMove(x,y) {
     return {x: x, y: y};
 }
 
+function leftHandRuleMove(x,y,orient) {
+    orient = (orient + 3) % 4;
+    while (disp[y][x][orient] === 0) {
+        orient = (orient + 1) % 4;
+    }
+    switch (orient) {
+    case 0:
+        // up
+        y--;
+        break;
+    case 1:
+        // right
+        x++;
+        break;
+    case 2:
+        // down
+        y++;
+        break;
+    case 3:
+        // left
+        x--;
+        break;
+    }
+    
+    return {x: x, y: y, orient: orient};
+}
+
 function santaMove() {
     currentSantaPosition = randomMove(currentSantaPosition.x, currentSantaPosition.y);
-    autocollectLastGift();
+    if (currentBadSantaPosition !== null) {
+        currentBadSantaPosition = leftHandRuleMove(currentBadSantaPosition.x, currentBadSantaPosition.y, currentBadSantaPosition.orient);
+    }
+    autocollectGifts();
     drawMaze();
 }
 
@@ -214,11 +269,28 @@ function drawMaze() {
 
     $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='oleg' src='./img/oleg.png' />");
 
-    if (currentPosition.x != currentSantaPosition.x || currentPosition.y != currentSantaPosition.y) {
-        $('#' + currentSantaPosition.y + '-' + currentSantaPosition.x).append("<img id='santa' src='./img/download.png' />");
-    } else {
+    if (currentPosition.x == currentSantaPosition.x && currentPosition.y == currentSantaPosition.y) {
         clearInterval(timer);
         winGame({ time: countdown, gift: foundGifts });
+        return;
+    }
+    if (currentPosition.x == currentBadSantaPosition.x && currentPosition.y == currentBadSantaPosition.y) {
+        clearInterval(timer);
+        loseGame();
+        return;
+    }
+    
+    $('#' + currentSantaPosition.y + '-' + currentSantaPosition.x).append("<img id='santa' src='./img/download.png' />");
+    
+    if (currentSantaPosition.x == currentBadSantaPosition.x && currentSantaPosition.y == currentBadSantaPosition.y) {
+        autoSantaGifts += badSantaGifts;
+        badSantaGifts = 0;
+        updateGiftCount();
+        currentBadSantaPosition = null;
+    }
+    
+    if (currentBadSantaPosition !== null) {
+        $('#' + currentBadSantaPosition.y + '-' + currentBadSantaPosition.x).append("<img id='santa' src='./img/badsanta.jpg' />");
     }
 };
 
