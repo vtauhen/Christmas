@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Maze from './maze';
 
-import "./index.css";
+import "./index.scss";
 
 const maxCountDown = 4;
 const childrenInterval = 5;
