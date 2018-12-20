@@ -274,7 +274,7 @@ function drawMaze() {
         winGame({ time: countdown, gift: foundGifts });
         return;
     }
-    if (currentPosition.x == currentBadSantaPosition.x && currentPosition.y == currentBadSantaPosition.y) {
+    if (currentBadSantaPosition !== null && currentPosition.x == currentBadSantaPosition.x && currentPosition.y == currentBadSantaPosition.y) {
         clearInterval(timer);
         loseGame();
         return;
@@ -282,7 +282,7 @@ function drawMaze() {
     
     $('#' + currentSantaPosition.y + '-' + currentSantaPosition.x).append("<img id='santa' src='./img/download.png' />");
     
-    if (currentSantaPosition.x == currentBadSantaPosition.x && currentSantaPosition.y == currentBadSantaPosition.y) {
+    if (currentBadSantaPosition !== null && currentSantaPosition.x == currentBadSantaPosition.x && currentSantaPosition.y == currentBadSantaPosition.y) {
         autoSantaGifts += badSantaGifts;
         badSantaGifts = 0;
         updateGiftCount();
