@@ -12,7 +12,7 @@
 #snow {
 	background: none;
 	z-index: -1;
-	background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake1.png'), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake2.png'), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake3.png');
+	background-image: url('/img/flake1.png'), url('/img/flake2.png'), url('/img/flake3.png');
 	height: 100%;
 	left: 0;
 	position: absolute;
