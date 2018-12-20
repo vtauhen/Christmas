@@ -3,23 +3,34 @@ import Maze from './maze';
 
 import "./index.css";
 
-let currentPosition = { x: 0, y: 0 };
+const maxCountDown = 5;
 let allowedKeys = [37, 38, 39, 40];
-let totalGifts = 40;
-let foundGifts = 0;
-let disp = new Maze(20, 20, totalGifts);
-disp[19][19][1] = 1;
 
-drawMaze();
-updateGiftCount();
+let disp;
+let currentPosition;
+let totalGifts;
+let foundGifts;
+let countdown;
+let timer;
+let isStarted = false;
 
 function newGame() {
-	  disp = new Maze(20, 20, totalGifts);
-	  disp[19][19][1] = 1;
-	  currentPosition = { x: 0, y: 0 };
-		foundGifts = 0;
-	  drawMaze();
-		updateGiftCount();
+    totalGifts = 40;
+    foundGifts = 0;
+    
+    $('.gift-counter').show();
+    
+    disp = new Maze(20, 20, totalGifts);
+    disp[19][19][1] = 1;
+    currentPosition = { x: 0, y: 0 };
+    foundGifts = 0;
+    countdown = maxCountDown;
+    drawMaze();
+    updateGiftCount();
+    
+    drawMaze();
+    updateGiftCount();
+    start();
 }
 
 $('#newGame').click(function (e) {
@@ -29,7 +40,7 @@ $('#newGame').click(function (e) {
 });
 
 $(document).keydown(function (e) {
-    if (allowedKeys.indexOf(e.which) == -1) {
+    if (allowedKeys.indexOf(e.which) == -1 || !isStarted) {
         return;
     }
 
@@ -63,8 +74,8 @@ $(document).keydown(function (e) {
 });
 
 function updateGiftCount() {
-	$('#found-gifts').text(foundGifts);
-	$('#total-gifts').text(totalGifts);
+    $('#found-gifts').text(foundGifts);
+    $('#total-gifts').text(totalGifts);
 }
 
 function winGame() {
@@ -87,18 +98,40 @@ function drawMaze() {
         $('#maze > tbody').append("</tr>");
     }
 		
-		if (disp[currentPosition.y][currentPosition.x][4] == 1) {
-				$('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
-				disp[currentPosition.y][currentPosition.x][4] = 0;
-				foundGifts++;
-				updateGiftCount();
-		}
+    if (disp[currentPosition.y][currentPosition.x][4] == 1) {
+        $('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
+        disp[currentPosition.y][currentPosition.x][4] = 0;
+        foundGifts++;
+        updateGiftCount();
+	}
 		
-	  $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='oleg' src='./img/oleg.png' />");
-		
-		if (currentPosition.x != disp[0].length - 1 ||  currentPosition.y != disp.length - 1) {
-				$('#' + (disp.length - 1) + '-' + (disp[0].length - 1)).append("<img id='santa' src='./img/download.png' />");
-		} else {
-				winGame();
-		}
+    $('#' + currentPosition.y + '-' + currentPosition.x).append("<img id='oleg' src='./img/oleg.png' />");
+    
+    if (currentPosition.x != disp[0].length - 1 ||  currentPosition.y != disp.length - 1) {
+        $('#' + (disp.length - 1) + '-' + (disp[0].length - 1)).append("<img id='santa' src='./img/download.png' />");
+     } else {
+         winGame();
+     }
 };
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function start() {
+    isStarted = true;
+    $('#cryingChild').empty();
+    timer = setInterval(function () {
+        countdown--;
+        if (countdown == 0) {
+            isStarted = false;
+            clearInterval(timer);
+            let img = getRandomInt(1, 6);
+            $('#cryingChild').append(`<img id='santa' src='./img/${img}.gif' />`);
+            $("#cryingChild").fadeTo(500, 0.2)
+        }
+        $("#countdown").text(countdown);
+    }, 1000);
+}
