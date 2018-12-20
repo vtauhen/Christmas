@@ -3,7 +3,8 @@ import Maze from './maze';
 
 import "./index.css";
 
-const maxCountDown = 5;
+const maxCountDown = 4;
+const childrenInterval = 5;
 let allowedKeys = [37, 38, 39, 40];
 
 let disp;
@@ -148,9 +149,9 @@ function start() {
     isStarted = true;
     timer = setInterval(function() {
         countdown--;
-        if (countdown % 5 == 0) {
+        if (countdown <= 0 && countdown % childrenInterval == 0) {
             let img = getRandomInt(1, 6);
-            $('#cryingChild').append(`<img id='santa' src='./img/${img}.gif' />`);
+            $('#cryingChild').append(`<img class='child' src='./img/${img}.gif' />`);
             $("#cryingChild img:last").delay(3000).fadeTo(500, 0.6)
         }
         $("#countdown").text(countdown);

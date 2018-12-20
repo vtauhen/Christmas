@@ -45,6 +45,10 @@ code {
   height: 30px;
 }
 
+.child {
+  height: 50px;
+}
+
 .hint {
   font-style: italic;
   color: #AAAAAA;
