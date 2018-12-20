@@ -116,7 +116,7 @@ function autocollectGifts() {
         disp[currentSantaPosition.y][currentSantaPosition.x][4] = 0;
         updateGiftCount();
     }
-    if (disp[currentBadSantaPosition.y][currentBadSantaPosition.x][4] ==  1) {
+    if (currentBadSantaPosition !== null && disp[currentBadSantaPosition.y][currentBadSantaPosition.x][4] ==  1) {
         badSantaGifts++;
         disp[currentBadSantaPosition.y][currentBadSantaPosition.x][4] = 0;
         updateGiftCount();
