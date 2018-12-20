@@ -38,18 +38,21 @@
         Merry0Christmas!
       </h1>
       <h2>
-				Santa got lost in the maze!
-			</h2>
-			<p>
+        Santa got lost in the maze!
+      </h2>
+      <p>
         Help Oleg find Santa. <span class='hint'>Oh… and he also lost all his gifts</span>
-			</p>
+      </p>
       <img id="largeSanta" src='./img/download.png' />
       <div class="btnWrapper">
         <a id="newGame" href="#" class="button">NEW GAME</a>
       </div>
       <div class="btnWrapper">
-        <label id="countdown"></label>
+        <div id="countdown" style="display: none">
+          <div id="countdown-number"></div>
+        </div>
       </div>
+      <div id="cryingChild"></div>
 
       <div class='gift-counter' style="display: none">
         <p>Found gifts: <span id='found-gifts'></span>
@@ -57,6 +60,11 @@
       </div>
 
       <div id="cryingChild"></div>
+      <div>
+        <h2>Records</h2>
+        <div class="records">
+        </div>
+      </div>
     </div>
   </div>
   <!--

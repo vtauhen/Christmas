@@ -170,6 +170,21 @@ h2 {
 }
 
 #countdown {
+  position: relative;
+  margin: auto;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+}
+
+#countdown-number {
+  color: black;
+  display: inline-block;
+  line-height: 40px;
+}
+
+.record {
   font-family: WavingChristmas;
   font-size: 24px;
 }
+

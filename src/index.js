@@ -3,7 +3,7 @@ import Maze from './maze';
 
 import "./index.scss";
 
-const maxCountDown = 4;
+const maxCountDown = 0;
 const childrenInterval = 5;
 let allowedKeys = [37, 38, 39, 40];
 
@@ -14,12 +14,11 @@ let foundGifts;
 let countdown;
 let timer;
 let isStarted = false;
+let records = [];
 
 function newGame() {
     totalGifts = 40;
     foundGifts = 0;
-
-    $('.gift-counter').show();
 
     disp = new Maze(20, 20, totalGifts);
     currentPosition = {
@@ -29,20 +28,33 @@ function newGame() {
     foundGifts = 0;
     countdown = maxCountDown;
     autocollectLastGift();
+
+    if (timer) {
+        clearInterval(timer);
+    }
+    $("#my-circle").addClass("off");
+    setTimeout(function () {
+        $("#my-circle").removeClass("off");
+    }, 100);
+
+    $('.gift-counter').show();
+    $('#countdown').show();
+    $("#countdown-number").text(countdown);
+
     drawMaze();
     updateGiftCount();
-    
+
     reset();
     start();
 }
 
-$('#newGame').click(function(e) {
+$('#newGame').click(function (e) {
     e.preventDefault();
 
     newGame();
 });
 
-$(document).keydown(function(e) {
+$(document).keydown(function (e) {
     if (allowedKeys.indexOf(e.which) == -1 || !isStarted) {
         return;
     }
@@ -85,7 +97,7 @@ $(document).keydown(function(e) {
 
 function autocollectLastGift() {
     let line = disp[disp.length - 1];
-    if (line[line.length - 1][4] ==  1) {
+    if (line[line.length - 1][4] == 1) {
         foundGifts++;
         line[line.length - 1][4] = 0;
     }
@@ -96,12 +108,25 @@ function updateGiftCount() {
     $('#total-gifts').text(totalGifts);
 }
 
-function winGame() {
+function winGame(result) {
     let winningText = "You won!";
     if (totalGifts != foundGifts) {
         winningText += "\nBut kids are still crying…";
     }
     alert(winningText);
+    records.push(result);
+    records.sort((x, y) => {
+        var dif = x.gift - y.gift;
+        if (dif === 0) {
+            return x.time - y.time;
+        }
+
+        return dif;
+    });
+    $(".records").empty();
+    records.map(r => {
+        $(".records").append(`<div><span class="record">Time:${r.time}, Gifts:${r.gift}</span></div>`);
+    });
     newGame();
 }
 
@@ -135,7 +160,7 @@ function drawMaze() {
         $('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
         disp[currentPosition.y][currentPosition.x][4] = 0;
         foundGifts++;
-        $("#cryingChild img:first").fadeOut(500, function() {
+        $("#cryingChild img:first").fadeOut(500, function () {
             $(this).remove();
         });
         updateGiftCount();
@@ -146,7 +171,8 @@ function drawMaze() {
     if (currentPosition.x != disp[0].length - 1 || currentPosition.y != disp.length - 1) {
         $('#' + (disp.length - 1) + '-' + (disp[0].length - 1)).append("<img id='santa' src='./img/download.png' />");
     } else {
-        winGame();
+        clearInterval(timer);
+        winGame({ time: countdown, gift: foundGifts });
     }
 };
 
@@ -163,13 +189,13 @@ function reset() {
 
 function start() {
     isStarted = true;
-    timer = setInterval(function() {
-        countdown--;
-        if (countdown <= 0 && $("#cryingChild img").length < (totalGifts - foundGifts) && countdown % childrenInterval == 0) {
+    timer = setInterval(function () {
+        countdown++;
+        if (countdown >= 30 && $("#cryingChild img").length < (totalGifts - foundGifts) && countdown % childrenInterval == 0) {
             let img = getRandomInt(1, 6);
             $('#cryingChild').append(`<img class='child' src='./img/${img}.gif' style='left: ` + Math.random() * 100 + `%; top: ` + Math.random() * 100 + `%' />`);
             $("#cryingChild img:last").delay(3000).fadeTo(500, 0.6)
         }
-        $("#countdown").text(countdown);
+        $("#countdown-number").text(countdown);
     }, 1000);
 }
