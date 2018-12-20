@@ -22,7 +22,6 @@ function newGame() {
     $('.gift-counter').show();
 
     disp = new Maze(20, 20, totalGifts);
-    disp[19][19][1] = 1;
     currentPosition = {
         x: 0,
         y: 0

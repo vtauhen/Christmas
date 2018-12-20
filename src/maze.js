@@ -28,7 +28,7 @@ export default function(x, y, giftsCount) {
     var visited = 1;
 
     // Pregenerate gift distribution
-    var giftCells = shuffle(Array(giftsCount).fill(1).concat(Array(totalCells - giftsCount).fill(0)));
+    var giftCells = shuffle(Array(giftsCount).fill(1).concat(Array(totalCells - giftsCount - 1).fill(0)));
 
     // Loop through all available cell positions
     while (visited < totalCells) {
@@ -58,8 +58,8 @@ export default function(x, y, giftsCount) {
             cells[next[0]][next[1]][next[3]] = 1;
 
             // Check if we will be pushing a gift there
-            if (giftCells[visited] == 1) {
-                cells[currentCell[0]][currentCell[1]][4] = 1;
+            if (giftCells[visited - 1] == 1) {
+                cells[next[0]][next[1]][4] = 1;
             }
 
             // Mark the neighbor as visited, and set it as the current cell
