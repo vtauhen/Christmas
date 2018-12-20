@@ -1,0 +1,97 @@
+.christmas-tree {
+	svg {
+		height: 100%;
+	}
+}
+
+#tree {
+	max-width: 400px;
+	display: block;
+	margin: 0 auto;
+}
+
+$colors: (
+	red: #EA385C,
+	gold-lt: #E7B75C,
+	blue-lt: #386FB1,
+	blue-dk: #28527C,
+	gold-dk: #B28947
+);
+
+@each $name, $color in $colors {
+	.#{$name} {
+		fill: darken($color, 20%);
+		@keyframes #{$name}-flash {
+			40% { fill: darken($color, 0%);	}
+			80% { fill: darken($color, 20%); }
+		}
+		animation: .6s #{$name}-flash ease-in-out infinite;
+	}
+}
+
+$timings: (
+				g1: 0s,
+				g2: .4s,
+				g3: .8s
+);
+
+@each $timing-name, $timing in $timings {
+	.#{$timing-name} {
+		animation-delay: $timing;
+	}
+}
+
+.st0{fill:#332C28;}
+.st1{fill:#00513E;}
+.st2{fill:#003828;}
+.st3{fill:#386FB1;}
+.st4{fill:#28527C;}
+.st5{fill:#EA385C;}
+.st6{fill:#E7B75C;}
+.st7{fill:#B28947;}
+
+
+body {
+	background: #A5D0CF;
+	background-size:100%;
+	height:100vh;
+	background-repeat: no-repeat;
+	overflow:hidden;
+	margin:0;
+	width:100%;
+}
+.christmas-blue {
+	color: #035ee2;
+	background: -webkit-linear-gradient(transparent, transparent), url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/blue_glitter.gif) repeat;
+	background: -o-linear-gradient(transparent, transparent) !important;
+	-webkit-background-clip: text !important;
+	-webkit-text-fill-color: transparent !important;
+	margin: 0;
+	padding: 0;
+
+	font-weight: 900;
+	width: 100%;
+	text-align: center;
+	letter-spacing: 1px;
+	z-index: 999999;
+	-webkit-background-clip: text;
+}
+
+.christmas-gold {
+	color: #D81E1E;
+
+	color: gold;
+	background: -webkit-linear-gradient(transparent, transparent), url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/gold_glitter.gif) repeat;
+	background: -o-linear-gradient(transparent, transparent) !important;
+	-webkit-background-clip: text !important;
+	-webkit-text-fill-color: transparent !important;
+	margin: 0;
+	padding: 0;
+
+	font-weight: 900;
+	width: 100%;
+	text-align: center;
+	letter-spacing: 1px;
+	z-index: 999999;
+	-webkit-background-clip: text;
+}

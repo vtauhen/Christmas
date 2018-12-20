@@ -261,6 +261,8 @@ function drawMaze() {
         $('#' + currentPosition.y + '-' + currentPosition.x + ' svg').remove();
         disp[currentPosition.y][currentPosition.x][4] = 0;
         foundGifts++;
+        var audio = new Audio('./Coin-collect-sound-effect.mp3');
+        audio.play()
         $("#cryingChild img:first").fadeOut(500, function () {
             $(this).remove();
         });
