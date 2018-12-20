@@ -29,6 +29,7 @@ function newGame() {
     };
     foundGifts = 0;
     countdown = maxCountDown;
+    autocollectLastGift();
     drawMaze();
     updateGiftCount();
     
@@ -82,6 +83,14 @@ $(document).keydown(function(e) {
     e.preventDefault(); // prevent the default action (scroll / move caret)
     drawMaze();
 });
+
+function autocollectLastGift() {
+    let line = disp[disp.length - 1];
+    if (line[line.length - 1][4] ==  1) {
+        foundGifts++;
+        line[line.length - 1][4] = 0;
+    }
+}
 
 function updateGiftCount() {
     $('#found-gifts').text(foundGifts);
