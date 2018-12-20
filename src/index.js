@@ -97,7 +97,12 @@ function updateGiftCount() {
 }
 
 function winGame() {
-    alert("You won!")
+    let winningText = "You won!";
+    if (totalGifts != foundGifts) {
+        winningText += "\nBut kids are still crying…";
+    }
+    alert(winningText);
+    newGame();
 }
 
 function drawMaze() {
